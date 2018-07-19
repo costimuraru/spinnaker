@@ -8,9 +8,14 @@ fi
 # deck settings
 /opt/spinnaker/bin/reconfigure_spinnaker.sh
 
-if ! grep -Fxq "Listen 127.0.0.1:9000" /etc/httpd/conf/httpd.conf
+if grep -Fxq "Listen 80" /etc/httpd/conf/httpd.conf
 then
-  echo "Listen 127.0.0.1:9000" >> /etc/httpd/conf/httpd.conf
+    sed -i -e 's/Listen 80/Listen 0.0.0.0:9000/g' /etc/httpd/conf/httpd.conf
+fi
+
+if ! grep -Fxq "Listen 0.0.0.0:9000" /etc/httpd/conf/httpd.conf
+then
+  echo "Listen 0.0.0.0:9000" >> /etc/httpd/conf/httpd.conf
 fi
 
 /opt/spinnaker/bin/enable_httpd_site.sh spinnaker
