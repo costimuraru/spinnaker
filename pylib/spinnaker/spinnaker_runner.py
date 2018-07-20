@@ -504,11 +504,14 @@ Proceeding anyway.
     run_quick('service %s start' % apache, echo=True)
 
   def get_apache_service_name(self):
-      result = run_quick('service --status-all', echo=False)
-      if "apache2" in result.stdout:
-          return "apache2"
+      result = run_quick('yum info httpd', echo=False)
       if "httpd" in result.stdout:
           return "httpd"
+
+      result = run_quick('dpkg -p apache2', echo=False)
+      if "apache2" in result.stdout:
+          return "apache2"
+      
 
       print 'Unable to determine apache service name. Using apache2.'
       return "apache2"
