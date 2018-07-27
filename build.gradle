@@ -13,11 +13,18 @@ buildscript {
   }
 }
 
+plugins {
+
+  // RPM
+  id 'nebula.ospackage' version '4.4.0'
+
+}
+
 group = "com.netflix.spinnaker.spinnaker"
 
 
-apply plugin: 'spinnaker.project'
-apply plugin: 'nebula.ospackage'
+//apply plugin: 'spinnaker.project'
+//apply plugin: 'nebula.ospackage'
 apply plugin: 'java'
 
 String toVers(String v) {
@@ -35,8 +42,9 @@ ospackage {
 
 // global package requirements
   packageName = project.name
-  version = toVers(project.version.toString())
-  release '3'
+  version = "0.83.6" // toVers(project.version.toString())
+  release "adobe"
+  os "LINUX"
 
 // installer scripts
   preInstall = file('pkg_scripts/preInstall.sh')
@@ -161,5 +169,3 @@ task publishInstallSpinnaker {
     conn.disconnect()
   }
 }
-
-tasks.release.dependsOn('publishInstallSpinnaker')
