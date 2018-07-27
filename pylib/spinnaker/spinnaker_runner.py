@@ -503,6 +503,16 @@ Proceeding anyway.
     print 'Starting %s server.' % apache
     run_quick('service %s start' % apache, echo=True)
 
+  def stop_spinnaker_monitoring(self):
+    service = "spinnaker-monitoring"
+    print 'Stopping %s server while stopping Spinnaker.' % service
+    run_quick('service %s stop' % service, echo=True)
+
+  def start_spinnaker_monitoring(self):
+    service = "spinnaker-monitoring"
+    print 'Starting %s server.' % service
+    run_quick('service %s start' % service, echo=True)
+
   def get_apache_service_name(self):
       result = run_quick('yum info httpd', echo=False)
       if "httpd" in result.stdout:
@@ -529,6 +539,7 @@ Proceeding anyway.
     jobs = self.get_all_java_subsystem_jobs()
     self.start_spinnaker_subsystems(jobs)
     self.start_deck()
+    self.start_spinnaker_monitoring()
     print 'Started all Spinnaker components.'
 
   def maybe_stop_subsystem(self, name, jobs):
@@ -561,6 +572,8 @@ Proceeding anyway.
           pid = self.maybe_stop_subsystem(name, jobs)
           if pid:
             stopped_list.append((name, pid))
+
+    self.stop_spinnaker_monitoring()
 
     for name,pid in stopped_list:
         count = 0
