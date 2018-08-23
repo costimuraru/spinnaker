@@ -267,6 +267,8 @@ class Runner(object):
     if secret_key is not None:
       environ['AWS_SECRET_KEY'] = environ.get('AWS_SECRET_KEY', secret_key)
 
+    environ['SPRING_PROFILES_ACTIVE'] = "local"
+
     return environ
 
   def maybe_start_job(self, jobs, subsystem):
